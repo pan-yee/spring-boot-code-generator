@@ -15,7 +15,7 @@ public class CodeGeneratorMain {
     private static final String JDBC_PASSWORD = "root";
 
     // 包名和模块名
-    private static final String PACKAGE_NAME = "cn.commerce.pms.server";
+    private static final String PACKAGE_NAME = "cn.commerce.pms.server.demo";
     private static final String MODULE_NAME = "";
 
     private static final String[] TBL_NAMES = {"t_warehouse"};
