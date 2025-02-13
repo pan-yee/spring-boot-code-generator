@@ -1,0 +1,292 @@
+<script lang="ts" setup>
+
+import { ref, reactive } from 'vue'
+import Api from '@/api'
+import { Search, CirclePlus, Edit, Delete, More, View, Operation, Plus } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
+import Color from 'element-plus/es/components/color-picker/src/utils/color';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+var Data = reactive({
+    list: [],
+    currentPage: ref(1),
+    pageSize: ref(10),
+    totalRecords: ref(100),
+    searchForm: ref({
+#foreach($field in ${model.fields})
+        ${field.propertyName}: ''#if($foreach.hasNext),#end
+#end
+    }),
+    editForm: ref({
+#foreach($field in ${model.fields})
+        ${field.propertyName}: ''#if($foreach.hasNext),#end
+#end
+    }),
+    editDialogVisible: ref(false),
+    detailDialogVisible: ref(false),
+    dialogTitle: ref("详情"),
+    ${model.originName}StatusSelectList: ref([{ name: '启用', value: '1' }, { name: '禁用', value: '0' }]),
+    defaultProps: {
+        children: 'children',
+        label: 'menuName',
+        disabled: 'disabled',
+    },
+    defaultCheckedList: ref([])
+})
+
+const queryPage = () => {
+    let params = {
+        page: Data.currentPage,
+        limit: Data.pageSize,
+#foreach($field in ${model.fields})
+        ${field.propertyName}: Data.searchForm.${field.propertyName}#if($foreach.hasNext),#end
+#end
+    }
+    Api.${model.capitalName}Api.commonQueryPage(params).then((res) => {
+        if (res.status = 200) {
+            Data.list = res.data.data.records;
+            Data.currentPage = Number.parseInt(res.data.data.current);
+            Data.pageSize = Number.parseInt(res.data.data.size);
+            Data.totalRecords = Number.parseInt(res.data.data.total);
+            successMessage();
+        } else {
+            errorMessage();
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+};
+
+const autoRun = () => {
+    queryPage();
+};
+
+autoRun();
+
+const handleSizeChange = (pageSize: number) => {
+    console.log(`\$\{pageSize\} items per page`)
+}
+
+const handleCurrentChange = (currentPage: number) => {
+    console.log(`current page: \$\{currentPage\}`)
+    if (Data.currentPage != currentPage) {
+        Data.currentPage = currentPage
+        queryPage();
+    }
+}
+
+const dialogAddForm = () => {
+    Data.dialogTitle = "添加"
+    Data.editDialogVisible = true
+    Data.detailDialogVisible = false
+#foreach($field in ${model.fields})
+    Data.searchForm.${field.propertyName} = ''
+#end
+}
+
+const viewDetail = (id: any) => {
+    Data.dialogTitle = "详情";
+    Data.editDialogVisible = false;
+    Data.detailDialogVisible = true
+    queryDetail(id);
+}
+
+const viewEdit = (id: any) => {
+    Data.dialogTitle = "编辑";
+    Data.editDialogVisible = true;
+    Data.detailDialogVisible = false
+    queryDetail(id);
+}
+
+const queryDetail = (id: any) => {
+    let params = {
+        id: id
+    }
+    Api.${model.capitalName}Api.commonQueryDetail(params).then((res) => {
+        console.log(res);
+        if (res.status = 200) {
+            Data.editForm = res.data.data
+            successMessage();
+        } else {
+            errorMessage();
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+};
+
+const deleteRow = (id: any) => {
+    ElMessageBox.confirm("确认要删除数据?").then(() => {
+        let params = {
+            id: id,
+        }
+        Api.${model.capitalName}Api.commonDelete(params).then((res) => {
+            console.log(res);
+            if (res.status = 200) {
+                Data.dialogTitle = "";
+                Data.editDialogVisible = false;
+                queryPage();
+            } else {
+                errorMessage();
+            }
+        }).catch((err) => {
+            console.log(err);
+            errorMessage();
+        });
+    })
+}
+
+const updateStatus = (id: any, status: any) => {
+    let newStatus = status == '1' ? '0' : '1';
+    let params = {
+        id: id,
+        ${model.originName}Status: newStatus,
+    }
+    Api.${model.capitalName}Api.commonUpdateStatus(params).then((res) => {
+        console.log(res);
+        if (res.status = 200) {
+            queryPage();
+        } else {
+            errorMessage();
+        }
+    }).catch((err) => {
+        console.log(err);
+        errorMessage();
+    });
+}
+
+const submitForm = () => {
+    let params = {
+#foreach($field in ${model.fields})
+        ${field.propertyName}: Data.editForm.${field.propertyName},
+#end
+    }
+    if (Data.editForm.id) {
+        Api.${model.capitalName}Api.commonUpdate(params).then((res) => {
+            console.log(res);
+            if (res.status = 200) {
+                Data.dialogTitle = "";
+                closeDialog();
+                queryPage();
+            } else {
+                errorMessage();
+            }
+        }).catch((err) => {
+            console.log(err);
+            errorMessage();
+        });
+    } else {
+        Api.${model.capitalName}Api.commonSave(params).then((res) => {
+            if (res.status = 200) {
+                Data.dialogTitle = "";
+                closeDialog();
+                queryPage();
+            } else {
+                errorMessage();
+            }
+        }).catch((err) => {
+            console.log(err);
+            errorMessage();
+        });
+    }
+}
+
+const closeDialog = () => {
+    Data.editDialogVisible = false
+    Data.detailDialogVisible = false
+    Data.roleUsersDialogVisible = false
+}
+
+const errorMessage = () => {
+    ElMessage.error('数据加载失败')
+}
+
+const successMessage = () => {
+    ElMessage({
+        message: "数据加载成功",
+        type: "success"
+    })
+}
+
+</script>
+
+<style scoped>
+.dialog-footer button:first-child {
+    margin-right: 10px;
+}
+</style>
+
+<template>
+    <el-form :inline="true" style="display: flex;">
+#foreach($field in ${model.fields})
+        <el-form-item label="${field.comment}">
+            <el-input v-model="Data.searchForm.${field.propertyName}" clearable placeholder="请输入${field.comment}"></el-input>
+        </el-form-item>
+#end
+        <el-form-item>
+            <el-button type="primary" :icon="Search" @click="queryPage">查询</el-button>
+            <el-button type="primary" :icon="CirclePlus" @click="dialogAddForm">添加</el-button>
+        </el-form-item>
+    </el-form>
+
+    <el-table :data="Data.list" border stripe style="width:100%"
+            :header-cell-style="{ backgroundColor: '#409EFF', color: '#FFF', fontSize: '14px' }">
+        <el-table-column label="序号" type="index" width="60px" align="center"></el-table-column>
+#foreach($field in ${model.fields})
+        <el-table-column label="${field.comment}" prop="${field.propertyName}"></el-table-column>
+#end
+        <el-table-column label="操作">
+            <template #default="scope">
+                <el-button @click="viewDetail(scope.row.id)" type="primary" :icon="View" circle title="详情"></el-button>
+                <el-button @click="viewEdit(scope.row.id)" type="warning" :icon="Edit" circle title="编辑"></el-button>
+                <el-button @click="deleteRow(scope.row.id)" type="danger" :icon="Delete" circle title="删除"></el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+
+    <el-pagination background style="margin-top: 20px;" v-model:current-page="Data.currentPage"
+            v-model:page-size="Data.pageSize" :total="Data.totalRecords" :page-sizes="[5, 10, 15, 50]"
+            layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange" />
+
+    <el-dialog v-model="Data.editDialogVisible" width="30%" :show-close="false" draggable>
+        <template #header>
+            <div style="font-size: 18px; color: #409eff; font-weight: bold; text-align: left;">{{ Data.dialogTitle }}
+            </div>
+        </template>
+        <el-form>
+#foreach($field in ${model.fields})
+            <el-form-item label="${field.comment}" label-width="120px">
+                <el-input v-model="Data.editForm.${field.propertyName}" clearable placeholder="请输入${field.comment}" :suffix-icon="Edit"></el-input>
+            </el-form-item>
+#end
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="closeDialog" type="primary">取消</el-button>
+                <el-button @click="submitForm" type="primary">确定</el-button>
+            </span>
+        </template>
+    </el-dialog>
+
+    <el-dialog v-model="Data.detailDialogVisible" width="30%" :show-close="false" draggable>
+        <template #header>
+            <div style="font-size: 18px; color: #409eff; font-weight: bold; text-align: left;">{{ Data.dialogTitle }}
+            </div>
+        </template>
+        <el-form>
+#foreach($field in ${model.fields})
+            <el-form-item label="${field.comment}" label-width="120px">
+                <el-input v-model="Data.editForm.${field.propertyName}" readonly disabled></el-input>
+            </el-form-item>
+#end
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="closeDialog" type="primary">取消</el-button>
+            </span>
+        </template>
+    </el-dialog>
+</template>

@@ -1,0 +1,46 @@
+package ${model.packageName};
+
+import ${model.componentsPackage}.db.mybatis.base.entity.AbstractDO;
+#foreach($pkg in ${model.importPackages})
+import ${pkg};
+#end
+
+/**
+ * <p>
+ * $!{model.tableComment}Entity
+ * </p>
+ *
+ * @author ${model.author}
+ * @since ${model.date}
+ */
+#if(${model.lombok})
+@EqualsAndHashCode(callSuper = true)
+@Data
+#end
+@TableName("${model.tableName}")
+public class ${model.entityName} extends AbstractDO {
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${model.fields})
+##    #if(${field.keyFlag})
+##        #set($keyPropertyName=${field.propertyName})
+##    #end
+
+#if("$!field.comment" != "")
+    #if(${swagger})
+    @ApiModelProperty(value = "${field.comment}")
+    #else
+    /**
+     * ${field.comment}
+     */
+    #end
+#end
+#if(${field.keyFlag})
+    @TableId(value = "${field.name}", type = IdType.${model.idTypeName})
+#else
+    @TableField("${field.name}")
+#end
+    private ${field.propertyType} ${field.propertyName};
+#end
+## ----------  END 字段循环遍历  ----------
+
+}

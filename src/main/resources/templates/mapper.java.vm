@@ -1,0 +1,24 @@
+package ${model.packageName};
+
+import ${model.entityPackage}.${model.entityName};
+import ${model.superMapperClassPackage};
+#if(${model.mapperAnnotationClass})
+import ${model.mapperAnnotationClass.name};
+#end
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * <p>
+ * $!{model.comment}Mapper接口
+ * </p>
+ *
+ * @author ${model.author}
+ * @since ${model.date}
+ */
+#if(${model.mapperAnnotationClass})
+@${model.mapperAnnotationClass.simpleName}
+#end
+@Mapper
+public interface ${model.mapperName} extends ${model.superMapperClass}<${model.entityName}> {
+
+}

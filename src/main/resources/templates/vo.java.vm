@@ -1,0 +1,73 @@
+package ${model.packageName};
+
+import ${model.componentsPackage}.core.model.vo.AbstractVO;
+#foreach($pkg in ${model.importPackages})
+import ${pkg};
+#end
+#if(${model.swagger})
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+#end
+
+/**
+ * <p>
+ * $!{model.comment}Vo
+ * ${model.lombok}
+ * </p>
+ *
+ * @author ${model.author}
+ * @since ${model.date}
+ */
+#if(${model.lombok})
+@EqualsAndHashCode(callSuper = true)
+@Data
+#end
+#if(${model.swagger})
+@ApiModel(value = "${model.voName}对象", description = "${model.voName}对象")
+#end
+#if(${model.serialVersionUID})
+public class ${model.voName} extends AbstractVO {
+#else
+public class ${model.voName} {
+#end
+#if(${model.serialVersionUID})
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+#end
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${model.fields})
+#if("$!field.comment" != "")
+
+    /**
+     * ${field.comment}
+     */
+#end
+#if(${model.swagger})
+    #if("$!field.comment" != "")
+    @ApiModelProperty("${field.comment}")
+    #else
+    @ApiModelProperty("")
+    #end
+#end
+    private ${field.propertyType} ${field.propertyName};
+#end
+#if(!${model.lombok})
+    #foreach($field in ${model.fields})
+        #if(${field.propertyType.equals("boolean")})
+            #set($getprefix="is")
+        #else
+            #set($getprefix="get")
+        #end
+
+    public ${field.propertyType} ${getprefix}${field.capitalName}() {
+        return ${field.propertyName};
+    }
+
+    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        this.${field.propertyName} = ${field.propertyName};
+    }
+    #end
+#end
+## ----------  END 字段循环遍历  ----------
+}

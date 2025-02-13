@@ -1,0 +1,59 @@
+package ${model.packageName};
+
+import ${model.componentsPackage}.core.util.BeanUtils;
+import ${model.componentsPackage}.core.model.vo.PageVO;
+import ${model.componentsPackage}.db.util.PageUtil;
+import ${model.entityPackage}.${model.entityName};
+import ${model.dtoPackage}.${model.dtoName};
+import ${model.voPackage}.${model.voName};
+import ${model.mapperPackage}.${model.mapperName};
+import ${model.servicePackage}.${model.serviceName};
+import ${model.superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+
+/**
+ * <p>
+ * $!{model.comment}服务实现类
+ * </p>
+ *
+ * @author ${model.author}
+ * @since ${model.date}
+ */
+@Slf4j
+@Service
+public class ${model.serviceImplName} extends ${model.superServiceImplClass}<${model.mapperName}, ${model.entityName}> implements ${model.serviceName} {
+
+    @Override
+    public PageVO<${model.voName}> queryPageList(${model.dtoName} pageDto) {
+        LambdaQueryWrapper<${model.entityName}> queryWrapper = new LambdaQueryWrapper<>();
+        Page<${model.entityName}> page = this.page(Page.of(pageDto.getPage(), pageDto.getLimit()), queryWrapper);
+        return PageUtil.convertToPage(page,${model.voName}.class);
+    }
+
+    @Override
+    public ${model.voName} queryDetail(Long id) {
+        ${model.entityName} entity = this.getById(id);
+        if (ObjectUtils.isEmpty(entity)) {
+            return null;
+        }
+        return BeanUtils.convertBean(entity, WarehouseVO.class);
+    }
+
+    @Override
+    public boolean save(${model.dtoName} reqDto) {
+        ${model.entityName} item = new ${model.entityName}();
+        BeanUtils.copyProperties(reqDto, item);
+        return this.save(item);
+    }
+
+    @Override
+    public boolean updateById(${model.dtoName} reqDto) {
+        ${model.entityName} updateDO = new ${model.entityName}();
+        BeanUtils.copyProperties(reqDto, updateDO);
+        return this.updateById(updateDO);
+    }
+}

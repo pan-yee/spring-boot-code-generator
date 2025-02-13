@@ -1,0 +1,17 @@
+package ${model.packageName};
+
+import ${model.esServicePackage}.${model.esServiceName};
+import org.springframework.stereotype.Service;
+
+/**
+ * <p>
+ * $!{model.comment}Es服务实现类
+ * </p>
+ *
+ * @author ${model.author}
+ * @since ${model.date}
+ */
+@Service
+public class ${model.esServiceImplName} implements ${model.esServiceName} {
+
+}

@@ -1,0 +1,13 @@
+package ${model.packageName};
+
+/**
+ * <p>
+ * $!{model.comment}Es服务类
+ * </p>
+ *
+ * @author ${model.author}
+ * @since ${model.date}
+ */
+public interface ${model.esServiceName} {
+
+}
