@@ -1,9 +1,11 @@
 package com.bins.code.generator.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.generator.util.ClassUtils;
 import com.bins.code.generator.config.builder.ConfigBuilder;
 import com.bins.code.generator.config.rule.NamingStrategy;
 import com.bins.code.generator.convert.INameConvert;
@@ -15,7 +17,12 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -65,6 +72,12 @@ public class EntityModel extends BaseModel {
      * 自定义基础的Entity类，公共字段
      */
     private Set<String> superEntityColumns = new HashSet<>();
+
+    /**
+     * 自定义忽略字段
+     * <a href="https://github.com/baomidou/generator/issues/46">...</a>
+     */
+    private final Set<String> ignoreColumns = new HashSet<>();
 
     /**
      * 包导入信息
@@ -169,6 +182,30 @@ public class EntityModel extends BaseModel {
         this.importPackages = importPackages;
     }
 
+    public void setIgnoreColumns(String... propertyNames) {
+        ignoreColumns.addAll(Arrays.asList(propertyNames));
+    }
+
+    private void setSuperEntityColumns() {
+        String superClass = this.superClass;
+        if (StringUtils.isNotBlank(superClass)) {
+            tryLoadClass(superClass).ifPresent(this::convertSuperEntityColumns);
+        } else {
+            if (!this.superEntityColumns.isEmpty()) {
+                log.warn("Forgot to set entity supper class ?");
+            }
+        }
+    }
+
+    private Optional<Class<?>> tryLoadClass(String className) {
+        try {
+            return Optional.of(ClassUtils.toClassConfident(className));
+        } catch (Exception e) {
+            //当父类实体存在类加载器的时候,识别父类实体字段，不存在的情况就只有通过指定superEntityColumns属性了。
+        }
+        return Optional.empty();
+    }
+
     /**
      * <p>
      * 父类 Class 反射属性转换为公共字段
@@ -186,7 +223,21 @@ public class EntityModel extends BaseModel {
             if (null == columnNaming || columnNaming == NamingStrategy.no_change) {
                 return field.getName();
             }
+            TableField tableField = field.getAnnotation(TableField.class);
+            if (tableField != null && StringUtils.isNotBlank(tableField.value())) {
+                return tableField.value();
+            }
             return StringUtils.camelToUnderline(field.getName());
         }).collect(Collectors.toSet()));
+    }
+    /**
+     * 匹配忽略字段(忽略大小写)
+     *
+     * @param fieldName 字段名
+     * @return 是否匹配
+     * @since 3.5.0
+     */
+    public boolean matchIgnoreColumns(String fieldName) {
+        return ignoreColumns.stream().anyMatch(e -> e.equalsIgnoreCase(fieldName));
     }
 }

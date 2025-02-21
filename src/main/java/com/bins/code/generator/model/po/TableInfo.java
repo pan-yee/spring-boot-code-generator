@@ -238,6 +238,7 @@ public class TableInfo {
         BeanUtils.copyProperties(this.strategyConfig.entityBuilder().get(), entityModel);
         this.entityModel = entityModel;
         this.tableName = tableName;
+        entityModel.setIgnoreColumns("create_user","update_user","create_time","update_time");
     }
 
     /**
@@ -267,6 +268,10 @@ public class TableInfo {
      * @param field 字段
      */
     public void addField(TableField field) {
+        if (entityModel.matchIgnoreColumns(field.getColumnName())) {
+            // 忽略字段不在处理
+            return;
+        }
         this.fields.add(field);
     }
 

@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiOperation;
 #if(${superControllerClassPackage})
 import ${superControllerClassPackage};
 #end
-import ${model.baseServicePackage}.valid.ValidGroups;
+import ${model.componentsPackage}.core.valid.ValidGroups;
 import ${model.componentsPackage}.core.model.ResultBody;
 import ${model.servicePackage}.${model.serviceName};
 import ${model.dtoPackage}.${model.dtoName};
