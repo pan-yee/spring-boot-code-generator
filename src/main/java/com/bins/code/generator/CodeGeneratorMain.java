@@ -10,9 +10,9 @@ import com.bins.code.generator.template.engine.VelocityTemplateEngine;
 
 public class CodeGeneratorMain {
 
-    private static final String JDBC_URL = "jdbc:mysql://10.130.241.159:3306/supply_pms?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSl=true";
+    private static final String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/supply_pms?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSl=true";
     private static final String JDBC_USER_NAME = "root";
-    private static final String JDBC_PASSWORD = "gdqOFkX3#Gqf6Siv";
+    private static final String JDBC_PASSWORD = "root";
 
     // 包名和模块名
     private static final String PACKAGE_NAME = "cn.commerce.pms.server.demo";
