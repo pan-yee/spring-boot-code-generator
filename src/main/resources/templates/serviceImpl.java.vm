@@ -40,7 +40,7 @@ public class ${model.serviceImplName} extends ${model.superServiceImplClass}<${m
         if (ObjectUtils.isEmpty(entity)) {
             return null;
         }
-        return BeanUtils.convertBean(entity, WarehouseVO.class);
+        return BeanUtils.convertBean(entity, ${model.voName}.class);
     }
 
     @Override
