@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -44,6 +45,7 @@ public class ${model.serviceImplName} extends ${model.superServiceImplClass}<${m
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(${model.dtoName} reqDto) {
         ${model.entityName} item = new ${model.entityName}();
         BeanUtils.copyProperties(reqDto, item);
@@ -51,6 +53,7 @@ public class ${model.serviceImplName} extends ${model.superServiceImplClass}<${m
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateById(${model.dtoName} reqDto) {
         ${model.entityName} updateDO = new ${model.entityName}();
         BeanUtils.copyProperties(reqDto, updateDO);
