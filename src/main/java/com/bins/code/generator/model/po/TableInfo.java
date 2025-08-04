@@ -95,6 +95,11 @@ public class TableInfo {
     private String dtoName;
 
     /**
+     * saveDto名称
+     */
+    private String saveDtoName;
+
+    /**
      * vo名称
      */
     private String voName;
@@ -346,6 +351,10 @@ public class TableInfo {
         this.originName = entityModel.getNameConvert().originNameConvert(this);
         this.capitalName = GeneratorUtils.capitalize(this.originName);
         this.dtoName = strategyConfig.dtoBuilder().get().getConverterFileName().convert(entityName);
+        /**
+         * saveDto名称
+         */
+        this.saveDtoName = strategyConfig.saveDtoBuilder().get().getConverterFileName().convert(entityName);
         this.voName = strategyConfig.voBuilder().get().getConverterFileName().convert(entityName);
         this.mapperName = strategyConfig.mapperBuilder().get().getConverterFileName().convert(entityName);
         this.xmlName = strategyConfig.mapperXmlBuilder().get().getConverterFileName().convert(entityName);
@@ -420,6 +429,10 @@ public class TableInfo {
 
     public String getDtoName() {
         return dtoName;
+    }
+
+    public String getSaveDtoName() {
+        return saveDtoName;
     }
 
     public String getVoName() {

@@ -3,6 +3,7 @@ package ${model.packageName};
 import ${model.componentsPackage}.core.model.vo.PageVO;
 import ${model.entityPackage}.${model.entityName};
 import ${model.dtoPackage}.${model.dtoName};
+import ${model.dtoPackage}.${model.saveDtoName};
 import ${model.voPackage}.${model.voName};
 import ${model.superServiceClassPackage};
 import java.util.List;
@@ -30,11 +31,11 @@ public interface ${model.serviceName} extends ${model.superServiceClass}<${model
     /**
     * 保存
     */
-    boolean save(${model.dtoName} reqDto);
+    boolean save(${model.saveDtoName} reqDto);
 
     /**
     * 修改
     */
-    boolean updateById(${model.dtoName} reqDto);
+    boolean updateById(${model.saveDtoName} reqDto);
 
 }

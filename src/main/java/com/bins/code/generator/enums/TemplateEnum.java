@@ -20,6 +20,7 @@ public enum TemplateEnum {
     MODULE_NAME("moduleName" , Constant.MODULE_NAME, "" , "" , null, TemplateTypeEnum.EMPTY.getCode()),
     ENTITY("entity" , Constant.ENTITY, FileTypeEnum.JAVA.getCode(), Constant.TEMPLATE_ENTITY_JAVA, EntityStrategyGenerator.getInstance(), TemplateTypeEnum.GENERAL.getCode()),
     DTO("dto" , Constant.DTO, FileTypeEnum.JAVA.getCode(), Constant.TEMPLATE_DTO_JAVA, DtoStrategyGenerator.getInstance(), TemplateTypeEnum.GENERAL.getCode()),
+    SAVE_DTO("saveDto" , Constant.SAVE_DTO, FileTypeEnum.JAVA.getCode(), Constant.TEMPLATE_SAVE_DTO_JAVA, SaveDtoStrategyGenerator.getInstance(), TemplateTypeEnum.GENERAL.getCode()),
     VO("vo" , Constant.VO, FileTypeEnum.JAVA.getCode(), Constant.TEMPLATE_VO_JAVA, VoStrategyGenerator.getInstance(), TemplateTypeEnum.GENERAL.getCode()),
     MAPPER("mapper" , Constant.MAPPER, FileTypeEnum.JAVA.getCode(), Constant.TEMPLATE_MAPPER, MapperStrategyGenerator.getInstance(), TemplateTypeEnum.GENERAL.getCode()),
     MAPPER_XML("mapperXml" , Constant.XML, FileTypeEnum.XML.getCode(), Constant.TEMPLATE_XML, MapperXmlStrategyGenerator.getInstance(), TemplateTypeEnum.GENERAL.getCode()),

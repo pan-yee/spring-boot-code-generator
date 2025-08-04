@@ -10,15 +10,15 @@ import com.bins.code.generator.template.engine.VelocityTemplateEngine;
 
 public class CodeGeneratorMain {
 
-    private static final String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/supply_pms?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSl=true";
+    private static final String JDBC_URL = "jdbc:mysql://10.130.241.159:3306/supply_biz_common?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSl=true";
     private static final String JDBC_USER_NAME = "root";
-    private static final String JDBC_PASSWORD = "root";
+    private static final String JDBC_PASSWORD = "gdqOFkX3#Gqf6Siv";
 
     // 包名和模块名
-    private static final String PACKAGE_NAME = "cn.commerce.pms.server.demo";
+    private static final String PACKAGE_NAME = "cn.commerce.biz.common.server";
     private static final String MODULE_NAME = "";
 
-    private static final String[] TBL_NAMES = {"t_warehouse"};
+    private static final String[] TBL_NAMES = {"t_strategy_global"};
     // private static final String[] TBL_NAMES = {"t_purchase_req", "t_purchase_req_detail", "t_purchase_task", "t_purchase_order", "t_purchase_order_detail"};
 
     // 表名的前缀,从表生成代码时会去掉前缀
@@ -86,6 +86,16 @@ public class CodeGeneratorMain {
                         .enableSwagger()
                         // .disableSerialVersionUID()
                         .formatFileName("%sDTO")
+        );
+
+        customGenerator.strategyConfig(
+                strategyConfigBuilder -> strategyConfigBuilder.saveDtoBuilder()
+                        .naming(NamingStrategy.underline_to_camel)
+                        .columnNaming(NamingStrategy.underline_to_camel)
+                        .enableLombok()
+                        .enableSwagger()
+                        // .disableSerialVersionUID()
+                        .formatFileName("%sSaveDTO")
         );
 
         customGenerator.strategyConfig(

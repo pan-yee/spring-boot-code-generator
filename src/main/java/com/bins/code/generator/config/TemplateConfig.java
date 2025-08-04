@@ -26,6 +26,11 @@ public class TemplateConfig {
     private String dto;
 
     /**
+     * 设置saveDto模板路径
+     */
+    private String saveDto;
+
+    /**
      * 设置vo模板路径
      */
     private String vo;
@@ -121,6 +126,7 @@ public class TemplateConfig {
     private TemplateConfig() {
         this.entity = TemplateEnum.ENTITY;
         this.dto = TemplateEnum.DTO.getTemplatePath();
+        this.saveDto = TemplateEnum.SAVE_DTO.getTemplatePath();
         this.vo = TemplateEnum.VO.getTemplatePath();
         this.controller = TemplateEnum.CONTROLLER.getTemplatePath();
         this.mapper = TemplateEnum.MAPPER.getTemplatePath();
@@ -167,6 +173,18 @@ public class TemplateConfig {
     public String getDto() {
         if (!this.disableDto) {
             return StringUtils.isBlank(this.dto) ? Constant.TEMPLATE_DTO_JAVA : this.dto;
+        }
+        return null;
+    }
+
+    /**
+     * 获取dto模板路径
+     *
+     * @return 模板路径
+     */
+    public String getSaveDto() {
+        if (!this.disableDto) {
+            return StringUtils.isBlank(this.saveDto) ? Constant.TEMPLATE_SAVE_DTO_JAVA : this.saveDto;
         }
         return null;
     }

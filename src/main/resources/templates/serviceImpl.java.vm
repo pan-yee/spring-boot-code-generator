@@ -5,6 +5,7 @@ import ${model.componentsPackage}.core.model.vo.PageVO;
 import ${model.componentsPackage}.db.util.PageUtil;
 import ${model.entityPackage}.${model.entityName};
 import ${model.dtoPackage}.${model.dtoName};
+import ${model.dtoPackage}.${model.saveDtoName};
 import ${model.voPackage}.${model.voName};
 import ${model.mapperPackage}.${model.mapperName};
 import ${model.servicePackage}.${model.serviceName};
@@ -46,7 +47,7 @@ public class ${model.serviceImplName} extends ${model.superServiceImplClass}<${m
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean save(${model.dtoName} reqDto) {
+    public boolean save(${model.saveDtoName} reqDto) {
         ${model.entityName} item = new ${model.entityName}();
         BeanUtils.copyProperties(reqDto, item);
         return this.save(item);
@@ -54,7 +55,7 @@ public class ${model.serviceImplName} extends ${model.superServiceImplClass}<${m
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateById(${model.dtoName} reqDto) {
+    public boolean updateById(${model.saveDtoName} reqDto) {
         ${model.entityName} updateDO = new ${model.entityName}();
         BeanUtils.copyProperties(reqDto, updateDO);
         return this.updateById(updateDO);

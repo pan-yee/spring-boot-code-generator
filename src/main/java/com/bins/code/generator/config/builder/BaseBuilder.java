@@ -22,6 +22,11 @@ public class BaseBuilder implements IConfigBuilder<StrategyConfig> {
         return strategyConfig.dtoBuilder();
     }
 
+    public SaveDtoGeneratorStrategy.Builder saveDtoBuilder() {
+        strategyConfig.addGenerator(SaveDtoStrategyGenerator.getInstance());
+        return strategyConfig.saveDtoBuilder();
+    }
+
     public VoGeneratorStrategy.Builder voBuilder() {
         strategyConfig.addGenerator(VoStrategyGenerator.getInstance());
         return strategyConfig.voBuilder();

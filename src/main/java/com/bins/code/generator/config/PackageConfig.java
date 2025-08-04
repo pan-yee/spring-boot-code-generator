@@ -179,6 +179,7 @@ public class PackageConfig {
             packageInfo.put(TemplateEnum.COMMON.getContent(), this.getCommonPkg());
             packageInfo.put(TemplateEnum.ENTITY.getContent(), this.joinPackage(this.getEntity(), TemplateEnum.ENTITY.getTemplateType()));
             packageInfo.put(TemplateEnum.DTO.getContent(), this.joinPackage(this.getDto(), TemplateEnum.DTO.getTemplateType()));
+            packageInfo.put(TemplateEnum.SAVE_DTO.getContent(), this.joinPackage(this.getDto(), TemplateEnum.DTO.getTemplateType()));
             packageInfo.put(TemplateEnum.VO.getContent(), this.joinPackage(this.getVo(), TemplateEnum.VO.getTemplateType()));
             packageInfo.put(TemplateEnum.MAPPER.getContent(), this.joinPackage(this.getMapper(), TemplateEnum.MAPPER.getTemplateType()));
             packageInfo.put(TemplateEnum.MAPPER_XML.getContent(), this.joinPackage(this.getXml(), TemplateEnum.MAPPER_XML.getTemplateType()));

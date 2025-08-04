@@ -80,6 +80,7 @@ public interface Constant {
     String PARENT = "Parent";
     String ENTITY = "Entity";
     String DTO = "Dto";
+    String SAVE_DTO = "SaveDto";
     String VO = "Vo";
     String SERVICE = "Service";
     String SERVICE_IMPL = "ServiceImpl";
@@ -117,6 +118,11 @@ public interface Constant {
      * DTO模板路径
      */
     String TEMPLATE_DTO_JAVA = "/templates/dto.java";
+
+    /**
+     * saveDTO模板路径
+     */
+    String TEMPLATE_SAVE_DTO_JAVA = "/templates/saveDto.java";
 
     /**
      * VO模板路径

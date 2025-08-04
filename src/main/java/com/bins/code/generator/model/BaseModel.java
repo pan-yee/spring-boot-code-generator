@@ -205,6 +205,11 @@ public class BaseModel implements IModel {
     private String dtoName;
 
     /**
+     * saveDto名称
+     */
+    private String saveDtoName;
+
+    /**
      * dto包名
      */
     private String dtoPackage;

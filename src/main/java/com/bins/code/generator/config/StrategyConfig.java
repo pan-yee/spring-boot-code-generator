@@ -2,10 +2,35 @@ package com.bins.code.generator.config;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.bins.code.generator.config.builder.BaseBuilder;
-import com.bins.code.generator.config.generator.*;
+import com.bins.code.generator.config.generator.AuthUtilsGeneratorStrategy;
+import com.bins.code.generator.config.generator.BusinessExceptionGeneratorStrategy;
+import com.bins.code.generator.config.generator.ConstantsGeneratorStrategy;
+import com.bins.code.generator.config.generator.ControllerGeneratorStrategy;
+import com.bins.code.generator.config.generator.DtoGeneratorStrategy;
+import com.bins.code.generator.config.generator.EntityGeneratorStrategy;
+import com.bins.code.generator.config.generator.ErrorCodeGeneratorStrategy;
+import com.bins.code.generator.config.generator.EsEntityGeneratorStrategy;
+import com.bins.code.generator.config.generator.EsServiceGeneratorStrategy;
+import com.bins.code.generator.config.generator.EsServiceImplGeneratorStrategy;
+import com.bins.code.generator.config.generator.MapperGeneratorStrategy;
+import com.bins.code.generator.config.generator.MapperXmlGeneratorStrategy;
+import com.bins.code.generator.config.generator.PageDtoGeneratorStrategy;
+import com.bins.code.generator.config.generator.ResultBodyGeneratorStrategy;
+import com.bins.code.generator.config.generator.SaveDtoGeneratorStrategy;
+import com.bins.code.generator.config.generator.ServiceGeneratorStrategy;
+import com.bins.code.generator.config.generator.ServiceImplGeneratorStrategy;
+import com.bins.code.generator.config.generator.ValidGroupGeneratorStrategy;
+import com.bins.code.generator.config.generator.VoGeneratorStrategy;
+import com.bins.code.generator.config.generator.WebApiGeneratorStrategy;
+import com.bins.code.generator.config.generator.WebPageGeneratorStrategy;
+import com.bins.code.generator.config.generator.WebRouterGeneratorStrategy;
 import com.bins.code.generator.strategy.IGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class StrategyConfig {
 
@@ -81,6 +106,8 @@ public class StrategyConfig {
 
     private final DtoGeneratorStrategy.Builder dtoBuilder = new DtoGeneratorStrategy.Builder(this);
 
+    private final SaveDtoGeneratorStrategy.Builder saveDtoBuilder = new SaveDtoGeneratorStrategy.Builder(this);
+
     private final VoGeneratorStrategy.Builder voBuilder = new VoGeneratorStrategy.Builder(this);
 
     private final ControllerGeneratorStrategy.Builder controllerBuilder = new ControllerGeneratorStrategy.Builder(this);
@@ -145,6 +172,15 @@ public class StrategyConfig {
      */
     public DtoGeneratorStrategy.Builder dtoBuilder() {
         return dtoBuilder;
+    }
+
+    /**
+     * dto配置构建者
+     *
+     * @return dto配置构建者
+     */
+    public SaveDtoGeneratorStrategy.Builder saveDtoBuilder() {
+        return saveDtoBuilder;
     }
 
     /**

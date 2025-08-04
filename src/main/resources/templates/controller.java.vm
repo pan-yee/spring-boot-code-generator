@@ -21,6 +21,7 @@ import ${model.componentsPackage}.core.valid.ValidGroups;
 import ${model.componentsPackage}.core.model.ResultBody;
 import ${model.servicePackage}.${model.serviceName};
 import ${model.dtoPackage}.${model.dtoName};
+import ${model.dtoPackage}.${model.saveDtoName};
 import ${model.voPackage}.${model.voName};
 import java.util.Collections;
 
@@ -71,7 +72,7 @@ public class ${model.controllerName} {
     */
     @PostMapping("/add")
     @ApiOperation(value = "添加【新增】", notes = "添加【新增】")
-    public ResultBody<String> add(@RequestBody ${model.dtoName} reqDto) {
+    public ResultBody<String> add(@RequestBody ${model.saveDtoName} reqDto) {
         ${model.originName}Service.save(reqDto);
         return ResultBody.ok();
     }
@@ -81,7 +82,7 @@ public class ${model.controllerName} {
     */
     @PostMapping("/edit")
     @ApiOperation(value = "编辑->保存", notes = "编辑->保存")
-    public ResultBody<String> edit(@Validated(ValidGroups.UpdateGroup.class) @RequestBody ${model.dtoName} reqDto) {
+    public ResultBody<String> edit(@Validated(ValidGroups.UpdateGroup.class) @RequestBody ${model.saveDtoName} reqDto) {
         ${model.originName}Service.updateById(reqDto);
         return ResultBody.ok();
     }
